@@ -16,7 +16,7 @@ import java.util.Date;
 public class Invocation {
     /***
      * 类型
-     * com.shengtianyizi.constants.HandlerConstant
+     * {@link com.shengtianyizi.constants.HandlerConstant}
      */
     private Integer type;
     /***
