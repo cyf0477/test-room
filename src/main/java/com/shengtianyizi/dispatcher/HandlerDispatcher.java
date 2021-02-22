@@ -41,7 +41,7 @@ public class HandlerDispatcher {
         //获取 type对应的 commandHandler处理器
         Handler commandHandler = commandHandlerContainer.getCommandHandler(invocation.getType());
         // 获取  MessageHandler 处理器的消息类
-        Class<? extends Message> messageClass = CommandHandlerContainer.getHandlerVOClass(commandHandler);
+        Class<? extends Message> messageClass = CommandHandlerContainer.getHandlerClass(commandHandler);
         //解析消息
         String context = invocation.getMessage();
         Message message = JSONObject.parseObject(context, messageClass);

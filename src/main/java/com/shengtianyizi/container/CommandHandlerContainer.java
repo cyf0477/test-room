@@ -65,7 +65,7 @@ public class CommandHandlerContainer implements InitializingBean {
      * @param handler 处理器
      * @return 消息类
      */
-    public static Class<? extends Message> getHandlerVOClass(Handler handler) {
+    public static Class<? extends Message> getHandlerClass(Handler handler) {
         // 获得 Bean 对应的 Class 类名。因为有可能被 AOP 代理过。
         Class<?> targetClass = AopProxyUtils.ultimateTargetClass(handler);
         // 获得接口的 Type 数组
