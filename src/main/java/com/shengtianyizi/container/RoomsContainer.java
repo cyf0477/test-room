@@ -2,7 +2,6 @@ package com.shengtianyizi.container;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -18,41 +17,41 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Slf4j
 public class RoomsContainer {
 
-    private static final ConcurrentHashMap<String, List<String>> rooms = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, CopyOnWriteArrayList<String>> rooms = new ConcurrentHashMap<>();
 
-    public static final CopyOnWriteArrayList<String> repeatRequestNos = new CopyOnWriteArrayList<>();
+    public static final CopyOnWriteArrayList<String> singleRequestNos = new CopyOnWriteArrayList<>();
 
     public static final CopyOnWriteArrayList<String> errorRequestNos = new CopyOnWriteArrayList<>();
 
-    public static synchronized void add(String roomId, String userId) {
+    public static void add(String roomId, String userId) {
         String requestNo = roomId + userId;
-        repeatRequestNos.add(requestNo);
-        List<String> userIds = rooms.get(roomId);
+        singleRequestNos.add(requestNo);
+        CopyOnWriteArrayList<String> userIds = rooms.get(roomId);
         if (null != userIds) {
             userIds.add(userId);
             log.info("user [{}],加入 room [{}] success.", userId, roomId);
             return;
         }
-        userIds = new ArrayList<>();
+        userIds = new CopyOnWriteArrayList<>();
         userIds.add(userId);
         rooms.put(roomId, userIds);
         log.info("user [{}],加入 room [{}] success.", userId, roomId);
     }
 
-    public static synchronized void remove(String roomId, String userId) {
-        List<String> userIds = rooms.get(roomId);
+    public static void remove(String roomId, String userId) {
+        CopyOnWriteArrayList<String> userIds = rooms.get(roomId);
         if (null != userIds) {
             if (userIds.contains(userId)) {
                 userIds.remove(userId);
                 String requestNo = roomId + userId;
-                repeatRequestNos.remove(requestNo);
+                singleRequestNos.remove(requestNo);
                 log.info("user [{}],离开 room [{}] success.", userId, roomId);
             }
         }
     }
 
     public static void show(String roomId) {
-        List<String> userIds = rooms.get(roomId);
+        CopyOnWriteArrayList<String> userIds = rooms.get(roomId);
         if (null == userIds) {
             log.info("当前房间内无人");
             return;

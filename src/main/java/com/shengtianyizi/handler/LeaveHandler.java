@@ -24,7 +24,7 @@ public class LeaveHandler implements Handler<LeaveMessage> {
         String userId = message.getUserId();
         RoomsContainer.show(roomId);
         String requestNo = roomId + userId;
-        if (!(RoomsContainer.repeatRequestNos).contains(requestNo)) {
+        if (!(RoomsContainer.singleRequestNos).contains(requestNo)) {
             RoomsContainer.errorRequestNos.add(requestNo);
             log.info("当前用户 [{}],由于网络先退出后进入原因 [{}]", userId, roomId);
             return;

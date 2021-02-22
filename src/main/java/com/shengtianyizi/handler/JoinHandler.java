@@ -30,7 +30,7 @@ public class JoinHandler implements Handler<JoinMessage> {
             log.info("忽略指令,user [{}],早已退出 room [{}]", userId, roomId);
             return;
         }
-        if (RoomsContainer.repeatRequestNos.contains(requestNo)) {
+        if (RoomsContainer.singleRequestNos.contains(requestNo)) {
             log.info("忽略指令,user [{}],重复加入 room [{}]", userId, roomId);
             return;
         }
