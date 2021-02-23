@@ -19,7 +19,7 @@ public interface Handler<T extends Message> {
     void execute(T message);
 
     /***
-     * 消息类型，即每个 Message 实现类上的 TYPE 静态字段
+     * 消息类型
      * @return
      */
     Integer getType();
