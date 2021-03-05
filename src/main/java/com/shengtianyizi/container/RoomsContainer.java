@@ -1,5 +1,6 @@
 package com.shengtianyizi.container;
 
+import lombok.Synchronized;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -26,16 +27,22 @@ public class RoomsContainer {
     public static void add(String roomId, String userId) {
         String requestNo = roomId + userId;
         singleRequestNos.add(requestNo);
-        CopyOnWriteArrayList<String> userIds = rooms.get(roomId);
-        if (null != userIds) {
-            userIds.add(userId);
-            log.info("user [{}],加入 room [{}] success.", userId, roomId);
-            return;
-        }
-        userIds = new CopyOnWriteArrayList<>();
+        CopyOnWriteArrayList<String> userIds = getRoom(roomId);
         userIds.add(userId);
         rooms.put(roomId, userIds);
         log.info("user [{}],加入 room [{}] success.", userId, roomId);
+    }
+
+    private static synchronized CopyOnWriteArrayList<String> getRoom(String roomId) {
+        CopyOnWriteArrayList<String> userIds = rooms.get(roomId);
+        if (userIds == null) {
+            userIds = createRoom();
+        }
+        return userIds;
+    }
+
+    private static CopyOnWriteArrayList<String> createRoom() {
+        return new CopyOnWriteArrayList<>();
     }
 
     public static void remove(String roomId, String userId) {
